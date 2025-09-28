@@ -1,4 +1,4 @@
-# DNP
+# Distance-informed Neural Processes
 
 This repository contains the official implementation of Distance-informed Neural Processes (DNP) in NeurIPS 2025. 
 

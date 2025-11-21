@@ -60,16 +60,17 @@ X, y, dx, dy = toy_regression_dataset()
 stdx, stdy = StandardScaler().fit(X), StandardScaler().fit(y)
 X, y = stdx.transform(X), stdy.transform(y)
 idx = np.arange(X.shape[0])
-idxC = np.random.choice(idx, size=(5,), replace=False)
+idxC = np.random.choice(idx, size=(10,), replace=False)
 idxT = np.array([i for i in idx if i not in idxC.tolist()])
 
 XC, yC = torch.from_numpy(X[idxC].astype(np.float32)), torch.from_numpy(y[idxC].astype(np.float32))
 XT, yT = torch.from_numpy(X[idxT].astype(np.float32)), torch.from_numpy(y[idxT].astype(np.float32))
 X, y = torch.from_numpy(X.astype(np.float32)), torch.from_numpy(y.astype(np.float32))
 
-torch.manual_seed(0)
+torch.manual_seed(5)
 
-dnp = RegressionDNP(dim_x=1, dim_y=1, transf_y=stdy, dim_h=64, dim_u=64, n_layers=1, dim_z=64, fb_z=1.0, lambda_min=0.1, lambda_max=1.0, beta=1.0)
+dnp = RegressionDNP(dim_x=1, dim_y=1, transf_y=stdy, dim_h=100, dim_u=3, n_layers=1, dim_z=50, fb_z=1.0, lambda_min=0.01, lambda_max=1.2, beta=1.0)
+
 
 if torch.cuda.is_available():
     XC, XT, X = XC.cuda(), XT.cuda(), X.cuda()
@@ -79,7 +80,7 @@ if torch.cuda.is_available():
 optimizer = Adam(dnp.parameters(), lr=1e-3)
 dnp.train()
 
-epochs = 650
+epochs = 10000
 for i in range(epochs):
     optimizer.zero_grad()
     loss = dnp(XC.unsqueeze(0), yC.unsqueeze(0), XT.unsqueeze(0), yT.unsqueeze(0))

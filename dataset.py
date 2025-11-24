@@ -29,7 +29,7 @@ def rbf_kernel_single(x, jitter=1e-8):
 
 
 def toy_regression_dataset():
-    N, num_extra = 15, 500
+    N, num_extra = 25, 500
     np.random.seed(1)
     
     # Define training and test inputs

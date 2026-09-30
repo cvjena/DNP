@@ -446,7 +446,7 @@ class RegressionDNP(nn.Module):
         q_context = torch.distributions.Normal(pz_global_mu_c, pz_global_sigma_c)
         kl = kl_divergence(q_target, q_context).mean(dim=0).sum()
 
-        spectral_loss = mlp_singular_value_loss(self.cond_trans, self.lambda_max, self.lambda_min)
+        spectral_loss = mlp_singular_value_loss(self.cond_trans, self.lambda_min, self.lambda_max)
 
         obj = obj_C + obj_T 
         obj = torch.mean(obj) 
